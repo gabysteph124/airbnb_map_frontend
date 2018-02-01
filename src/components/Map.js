@@ -9,7 +9,8 @@ const AirbnbMap = withGoogleMap(props => (
     onDragEnd={props.handleMapChanged}
     onBoundsChanged={props.handleMapFullyLoaded}
     defaultCenter={props.center}
-    defaultZoom={props.zoom} >
+    defaultZoom={props.zoom}
+  >
     {
       props.places.length > 0 && props.places.map(place => (
         <PlaceMarker key={`place${place.id}`}
