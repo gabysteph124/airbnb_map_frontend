@@ -16,7 +16,7 @@ const AirbnbMap = withGoogleMap(props => (
         <PlaceMarker key={`place${place.id}`}
                      id={place.id}
                      lat={place.latitude}
-                     lng={place.longtitude}
+                     lng={place.longitude}
                      description={place.description}
                      name={place.name}
                      price={place.price} />
@@ -28,10 +28,10 @@ const AirbnbMap = withGoogleMap(props => (
 export class Map extends Component {
   constructor(props) {
     super(props)
-    
+
     this.xMapBounds = { min: null, max: null }
     this.yMapBounds = { min: null, max: null }
-    
+
     this.mapFullyLoaded = false
     this.zoom = 7
 
@@ -41,56 +41,56 @@ export class Map extends Component {
       lng: 19.9357531
     };
   }
-  
-  handleMapChanged(){
+
+  handleMapChanged() {
     this.getMapBounds()
     this.setMapCenterPoint()
     this.fetchPlacesFromApi()
   }
-  
+
   handleMapMounted(map) {
     this.map = map
   }
-  
+
   handleMapFullyLoaded() {
     if (this.mapFullyLoaded)
       return
-      
+
     this.mapFullyLoaded = true
     this.handleMapChanged()
   }
-  
+
   setMapCenterPoint() {
     this.setState({
       lat: this.map.getCenter().lat(),
       lng: this.map.getCenter().lng()
     })
   }
-  
+
   fetchPlacesFromApi() {
     this.setState({ places: [] })
-    
+
     fetch(`/api/places?min_lng=${this.xMapBounds.min}&max_lng=${this.xMapBounds.max}&min_lat=${this.yMapBounds.min}&max_lat=${this.yMapBounds.max}`,
       { method: 'GET' })
       .then((response) => response.json())
       .then((response) => this.setState({ places: response }))
   }
-  
+
   getMapBounds() {
     var mapBounds = this.map.getBounds()
     var xMapBounds = mapBounds.b
     var yMapBounds = mapBounds.f
-    
+
     this.xMapBounds.min = xMapBounds.b
     this.xMapBounds.max = xMapBounds.f
-    
+
     this.yMapBounds.min = yMapBounds.f
     this.yMapBounds.max = yMapBounds.b
   }
 
   render() {
     const {lat, lng, places} = this.state
-    
+
     return(
       <div style={{width: `750px`, height: `750px`}}>
         <AirbnbMap
@@ -115,4 +115,4 @@ export class Map extends Component {
   }
 }
 
-export default Map
+export default Map;
